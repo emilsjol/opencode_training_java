@@ -76,18 +76,14 @@ public final class InventoryService {
         if (normalized.quantity() < 0) {
             throw invalid("Quantity cannot be negative");
         }
-        if (normalized.reorderLevel() < 0) {
-            throw invalid("Reorder level cannot be negative");
-        }
+        validateReorderLevel(normalized.reorderLevel());
         return normalized.withId(0);
     }
 
     private static InventoryItem validateForUpdate(InventoryItem item) {
         InventoryItem normalized = normalize(item);
         validateTextFields(normalized);
-        if (normalized.reorderLevel() < 0) {
-            throw invalid("Reorder level cannot be negative");
-        }
+        validateReorderLevel(normalized.reorderLevel());
         return normalized;
     }
 
@@ -113,6 +109,12 @@ public final class InventoryService {
         requireText("Storage location", item.storageLocation(), LOCATION_MAX_LENGTH);
         if (item.description().length() > DESCRIPTION_MAX_LENGTH) {
             throw invalid("Description must be " + DESCRIPTION_MAX_LENGTH + " characters or fewer");
+        }
+    }
+
+    private static void validateReorderLevel(int level) {
+        if (level < 0) {
+            throw invalid("Reorder level cannot be negative");
         }
     }
 
