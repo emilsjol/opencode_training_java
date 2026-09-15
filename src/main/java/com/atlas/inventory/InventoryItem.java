@@ -15,6 +15,14 @@ public record InventoryItem(
                 quantity, reorderLevel, description);
     }
 
+    /**
+     * Calculates the reorder shortage.
+     * @return the amount needed to reach reorderLevel, or 0 if quantity is already sufficient.
+     */
+    public int reorderShortage() {
+        return Math.max(0, reorderLevel - quantity);
+    }
+
     public String toJson() {
         return "{" +
                 "\"id\":" + id + "," +
