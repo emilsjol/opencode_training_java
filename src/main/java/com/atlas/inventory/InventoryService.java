@@ -65,7 +65,7 @@ public final class InventoryService {
     public static int totalReorderShortage(List<InventoryItem> items) {
         int total = 0;
         for (InventoryItem item : items) {
-            total += item.reorderLevel() - item.quantity();
+            total += Math.max(item.reorderLevel() - item.quantity(), 0);
         }
         return total;
     }
